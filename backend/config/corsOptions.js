@@ -1,13 +1,10 @@
-const origins = require('./origins')
+const allowedLists = require('./allowedList')
 
 const corsOptions = {
-    origin: (origin, callback) => {
-        if (origins.indexOf(origin) !== -1 || origin) {
-            callback(null, true)
-        }
-    },
+    origin: allowedLists,
     credentials: true,
     optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'DELETE', 'PUT']
 }
 
 module.exports = corsOptions
