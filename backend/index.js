@@ -12,14 +12,14 @@ const app = express()
 const PORT = process.env.PORT
 
 connectDB()
+app.use(errHandler)
 app.use(express.json())
 app.use(morgan('tiny'))
-app.use(express.urlencoded({ extended: false }))
 app.use(cors(corsOptions))
+app.use(express.urlencoded({ extended: false }))
 
-app.use(errHandler)
 
-app.get('^/$|i/ndex(.html)', (req, res) => {
+app.get('^/$|/index(.html)', (req, res) => {
     res.status(200).json({ message: 'Successful! '})
 })
 
