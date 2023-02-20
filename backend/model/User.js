@@ -9,14 +9,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    roles: {
-        User: {
-            type: Number,
-            default: 2000
-        },
-        Admin: Number,
-        Employee: Number,
-        Manager: Number
+    roles: [{
+        type: String,
+        default: "Employee"
+    }],
+    active: {
+        type: Boolean,
+        default: true
     },
     creationDate: {
         type: Date,
@@ -24,4 +23,4 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.Model('userModel', userSchema)
+export default mongoose.Model('User', userSchema)
