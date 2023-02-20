@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     roles: {
         User: {
             type: Number,
-            default: 2001
+            default: 2000
         },
         Admin: Number,
         Employee: Number,
