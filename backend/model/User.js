@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    password: {
+    pswd: {
         type: String,
         required: true
     },
@@ -23,4 +23,4 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.Model('User', userSchema)
+module.exports = mongoose.Model('User', userSchema)
