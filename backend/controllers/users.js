@@ -31,10 +31,25 @@ const createNewUser = asyncHandler(async (req, res) => {
     })
 
     const hashedPswd = await bcrypt.hash(pswd, 10)
+    const user = await User.create({
+        user: username,
+        pswd: hashedPswd,
+        roles
+    })
+
+    if (user) {
+        res.status(201).json({
+            message: `New user ${user} was created`
+        })
+    } else {
+        res.status(404).json({
+            message: "Invalid data recieved!"
+        })
+    }
 })
 
 const updateUser = asyncHandler(async (req, res) => {
-
+    
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
