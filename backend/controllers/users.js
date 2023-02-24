@@ -44,12 +44,18 @@ const createNewUser = asyncHandler(async (req, res) => {
     } else {
         res.status(404).json({
             message: "Invalid data recieved!"
-        })
+        })     
     }
 })
 
 const updateUser = asyncHandler(async (req, res) => {
-    
+    const { id, username, password, roles, active } = req.body
+
+    if (!id || !username || !password || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean') {
+        return res.status(404).json({
+
+        })
+    }
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
