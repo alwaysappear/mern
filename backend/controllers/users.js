@@ -30,7 +30,7 @@ const createNewUser = asyncHandler(async (req, res) => {
         message: "User already exists."
     })
 
-    const hashedPswd = await bcrypt.hash(pswd, 10)
+    const hashedPswd = await bcrypt.hash(password, 10)
     const user = await User.create({
         user: username,
         pswd: hashedPswd,
@@ -86,12 +86,38 @@ const updateUser = asyncHandler(async (req, res) => {
     const updatedUser = await user.save()
 
     res.json({
-        message: `New user ${user.user} updated successfully.`
+        message: `New user ${updatedUser.user} updated successfully.`
     })
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
+    const { id } = req.body
 
+    if (!id) {
+        return res.status(400).json({
+            message: "User ID is required!"
+        })
+    }
+
+    const notes = await Note.findOne({ user: id }).exec().lean()
+
+    if (notes?.length) {
+        return res.status(400).json({
+            message: "Can't delete! User still have assigned note(s)."
+        })
+    }
+
+    const user = await User.findById(id).exec()
+    if (!user) {
+        return res.status(200).json({
+            message: "User not found!"
+        })
+    }
+
+    const re = user.deleteOne()
+    res.json({
+        message: `${re.user} has been deleted.`
+    })
 })
 
 module.exports = {
