@@ -51,11 +51,13 @@ const createNewUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
     const { id, username, password, roles, active } = req.body
 
-    if (!id || !username || !password || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean') {
-        return res.status(404).json({
-
+    if (!id || !username || !password
+        || !Array.isArray(roles) || !roles.length
+        || typeof active !== 'boolean') return res.status(400).json({
+            message: "All fields are required"
         })
-    }
+    
+    const user = await User.findById(id).exec()
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
