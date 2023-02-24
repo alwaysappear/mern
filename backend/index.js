@@ -18,10 +18,8 @@ app.use(morgan('tiny'))
 app.use(cors(corsOptions))
 app.use(express.urlencoded({ extended: false }))
 
-
-app.get('^/$|/index(.html)', (req, res) => {
-    res.status(200).json({ message: 'Successful! '})
-})
+app.use('/', require('./routes/root'))
+app.use('/users', require('./routes/userRoutes'))
 
 app.get('*', (req, res) => {
     res.status(404).json({ message: 'Page not found!'})
