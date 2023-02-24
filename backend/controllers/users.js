@@ -62,6 +62,14 @@ const updateUser = asyncHandler(async (req, res) => {
     if (!user) return res.status(400).json({
         message: "User does not exist."
     })
+
+    const duplicate = await User.findOne({ user: username }).lean()
+
+    if (duplicate && duplicate?._id.toString() !== id) {
+        return res.status(409).json({
+            message: "Username already exists"
+        })
+    }
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
