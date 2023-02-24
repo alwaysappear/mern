@@ -28,6 +28,6 @@ app.get('*', (req, res) => {
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB!')
     app.listen(PORT, () => {
-        console.log(`Server is running at PORT: ${PORT}`)
+        console.log(`Server is running. Navigat to http://localhost:${PORT}`)
     })
 })
