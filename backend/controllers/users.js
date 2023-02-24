@@ -58,6 +58,10 @@ const updateUser = asyncHandler(async (req, res) => {
         })
     
     const user = await User.findById(id).exec()
+
+    if (!user) return res.status(400).json({
+        message: "User does not exist."
+    })
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
