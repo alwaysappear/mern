@@ -53,15 +53,19 @@ const updateUser = asyncHandler(async (req, res) => {
 
     if (!id || !username || !password
         || !Array.isArray(roles) || !roles.length
-        || typeof active !== 'boolean') return res.status(400).json({
-            message: "All fields are required"
-        })
+        || typeof active !== 'boolean') {
+            return res.status(400).json({
+                message: "All fields are required"
+            })
+        }
     
     const user = await User.findById(id).exec()
 
-    if (!user) return res.status(400).json({
-        message: "User does not exist."
-    })
+    if (!user) {
+        return res.status(400).json({
+            message: "User does not exist."
+        })
+    }
 
     const duplicate = await User.findOne({ user: username }).lean()
 
@@ -70,6 +74,20 @@ const updateUser = asyncHandler(async (req, res) => {
             message: "Username already exists"
         })
     }
+
+    user.user = username
+    user.roles = roles
+    user.active = active
+
+    if (password) {
+        user.pswd = await bcrypt.hash(password, 10)
+    }
+
+    const updatedUser = await user.save()
+
+    res.json({
+        message: `New user ${user.user} updated successfully.`
+    })
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
