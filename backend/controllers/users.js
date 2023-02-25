@@ -6,7 +6,7 @@ const asyncHandler = require('express-async-handler')
 
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find().select('-pswd').lean()
-    if (!users) return res.status(400).json({ message: "Users not found." })
+    if (!users?.length) return res.status(400).json({ message: "Empty users." })
     return res.status(200).json(users)
 })
 
@@ -39,7 +39,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 
     if (user) {
         res.status(201).json({
-            message: `New user ${user} was created`
+            message: `New user ${user.user} was created`
         })
     } else {
         res.status(404).json({
@@ -99,9 +99,9 @@ const deleteUser = asyncHandler(async (req, res) => {
         })
     }
 
-    const notes = await Note.findOne({ user: id }).exec().lean()
+    const note = await Note.findOne({ user: id }).lean().exec()
 
-    if (notes?.length) {
+    if (note) {
         return res.status(400).json({
             message: "Can't delete! User still have assigned note(s)."
         })
@@ -109,12 +109,12 @@ const deleteUser = asyncHandler(async (req, res) => {
 
     const user = await User.findById(id).exec()
     if (!user) {
-        return res.status(200).json({
+        return res.status(400).json({
             message: "User not found!"
         })
     }
 
-    const re = user.deleteOne()
+    const re = await user.deleteOne()
     res.json({
         message: `${re.user} has been deleted.`
     })
