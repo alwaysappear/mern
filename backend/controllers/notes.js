@@ -2,7 +2,7 @@ const Note = require('../model/Note')
 const User = require('../model/User')
 const asyncHandler = require('express-async-handler')
 
-const getAllNotes = async(async (req, res) => {
+const getAllNotes = (async (req, res) => {
     const notes = await Note.find().lean()
     if (!notes?.length) {
         return res.status.json({ message: "Empty notes."})
