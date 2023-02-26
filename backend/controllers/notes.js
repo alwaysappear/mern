@@ -17,7 +17,21 @@ const getAllNotes = async(async (req, res) => {
 })
 
 const addNote = asyncHandler(async (req, res) => {
+    const { user, title, content } = req.body
 
+    if (!user || !content) {
+        return res.status(400).json({
+            message: "All fields are required!"
+        })
+    }
+
+    await Note.create({
+        user, title, content
+    })
+
+    res.status(201).json({
+        message: "Note saved!"
+    })
 })
 
 const editNote = asyncHandler(async (req, res) => {
