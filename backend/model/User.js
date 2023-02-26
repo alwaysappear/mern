@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     lastEdit: {
         type: Date,
-        default:  0
+        default: new Date()
     }
 })
 
