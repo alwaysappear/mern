@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     creationDate: {
         type: Date,
         default: new Date()
+    },
+    lastEdit: {
+        type: Date,
+        default:  0
     }
 })
 
