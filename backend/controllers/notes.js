@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler')
 const getAllNotes = (async (req, res) => {
     const notes = await Note.find().lean()
     if (!notes?.length) {
-        return res.status.json({ message: "Empty notes."})
+        return res.status(400).json({ message: "Empty notes."})
     }
 
     const notesWithUser = await Promise.all(notes.map(async note => {
