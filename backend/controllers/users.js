@@ -78,6 +78,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.user = username
     user.roles = roles
     user.active = active
+    user.lastEdit = new Date()
 
     if (password) {
         user.pswd = await bcrypt.hash(password, 10)
