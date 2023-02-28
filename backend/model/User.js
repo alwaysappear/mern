@@ -1,30 +1,27 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
-    user: {
-        type: String,
-        required: true
+const userSchema = new mongoose.Schema(
+    {
+        user: {
+            type: String,
+            required: true
+        },
+        pswd: {
+            type: String,
+            required: true
+        },
+        roles: [{
+            type: String,
+            default: "Employee"
+        }],
+        active: {
+            type: Boolean,
+            default: true
+        }
     },
-    pswd: {
-        type: String,
-        required: true
-    },
-    roles: [{
-        type: String,
-        default: "Employee"
-    }],
-    active: {
-        type: Boolean,
-        default: true
-    },
-    creationDate: {
-        type: Date,
-        default: new Date()
-    },
-    lastEdit: {
-        type: Date,
-        default: new Date()
+    {
+        timestamps: true
     }
-})
+)
 
 module.exports = mongoose.model('User', userSchema)
