@@ -46,13 +46,13 @@ const addNote = asyncHandler(async (req, res) => {
 const editNote = asyncHandler(async (req, res) => {
     const { id, user, title, content, completed } = req.body
 
-    if (!id) {
+    if (!id || !user || !content || typeof completed !== 'boolean') {
         return res.status(400).json({
-            message: "Invalid ID."
+            message: "Note not saved! All fields are reqruired."
         })
     }
 
-    const note = await Note.findById(user).exec()
+    const note = await Note.findById(id).exec()
 
     if (!note) {
         return res.status(404).json({
@@ -63,12 +63,6 @@ const editNote = asyncHandler(async (req, res) => {
     if (note.id !== id) {
         return res.status(401).json({
             message: "You can't edit note ID."
-        })
-    }
-
-    if (!content || typeof completed !== 'boolean') {
-        return res.status(400).json({
-            message: "Note not saved. Invalid Input!"
         })
     }
 
