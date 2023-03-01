@@ -10,7 +10,7 @@ const getAllNotes = (async (req, res) => {
     }
 
     const notesWithUser = await Promise.all(notes.map(async note => {
-        const user = await User.findById(note.user).lean().exec()
+        const user = await User.findById(note.user).select('-pswd').lean().exec()
         return { ...note, user }
     }))
 
@@ -26,11 +26,11 @@ const addNote = asyncHandler(async (req, res) => {
         })
     }
 
-    const newNote = await Note.create({
+    const note = await Note.create({
         user, title: title.trim(), content: content.trim()
     })
 
-    if (newNote) {
+    if (note) {
         res.status(201).json({
             message: "Note saved!"
         })
@@ -76,7 +76,26 @@ const editNote = asyncHandler(async (req, res) => {
 })
 
 const deleteNote = asyncHandler(async (req, res) => {
+    const { id } = req.body
 
+    if (!id) {
+        return res.status(400).json({
+            message: "Note ID is required."
+        })
+    }
+
+    const note = await Note.findById(id).exec()
+
+    if (!note) {
+        return res.status(400).json({
+            message: "Note does not exist."
+        })
+    }
+
+    await note.deleteOne()
+    res.json({
+        message: "Note deleted!"
+    })
 })
 
 module.exports = {
